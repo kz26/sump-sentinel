@@ -6,8 +6,9 @@ import random
 import sqlite3
 import time
 
+from version import __version__
 
-from flask import Flask, abort, g, jsonify, make_response
+from flask import Flask, abort, g, jsonify, make_response, render_template
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
@@ -27,6 +28,15 @@ def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
+
+
+@app.route('/')
+def index():
+    return render_template('index.html',
+        version=__version__,
+        sump_depth=app.config['SUMP_DEPTH'],
+        alert_depth=app.config['ALERT_DEPTH']
+    )
 
 
 @app.route('/img/chart24h.png')
