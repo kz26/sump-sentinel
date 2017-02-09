@@ -1,0 +1,1 @@
+CREATE TABLE data (timestamp INTEGER PRIMARY KEY, value INTEGER);
