@@ -45,7 +45,8 @@ def gen_chart():
     x = []
     y = []
     for i, row in enumerate(db.execute(
-        "SELECT * FROM data WHERE timestamp >= ? - 86400", [int(time.time())])):
+        "SELECT timestamp, ?-value FROM data WHERE timestamp >= ? - 86400",
+            [app.config['SUMP_DEPTH'], int(time.time())])):
         if row and i % 60 == 0:
             x.append(datetime.fromtimestamp(row[0]))
             y.append(row[1])
@@ -56,7 +57,7 @@ def gen_chart():
         ax.set_xlabel('Time')
         ax.set_ylabel('Water level (cm)')
         fig.autofmt_xdate()
-        ax.xaxis.set_major_formatter(mdates.DateFormatter('%I:%M %p'))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %-d %-I %p'))
         ax.xaxis.set_major_locator(mdates.HourLocator())
         stream = io.BytesIO()
         fig.savefig(stream, format='png')
@@ -72,7 +73,7 @@ def gen_chart():
 def latest_reading():
     db = get_db()
     c = db.cursor()
-    c.execute("SELECT * FROM data ORDER BY timestamp DESC LIMIT 1")
+    c.execute("SELECT timestamp AS timestamp, ?-value AS value FROM data ORDER BY timestamp DESC LIMIT 1", [app.config['SUMP_DEPTH']])
     res = c.fetchone()
     if res:
         return jsonify({k: res[k] for k in res.keys()})

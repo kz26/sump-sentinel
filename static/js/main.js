@@ -9,7 +9,7 @@ $(document).ready(function() {
                 tds = $("#live-data").children("td");
                 tds.eq(0).text(data["value"] + " cm");
                 md = moment(data["timestamp"] * 1000)
-                tds.eq(1).text(md.format("MMM D, YYYY H:mm:ss A") + " (" + moment().to(md) + ")");
+                tds.eq(1).text(md.format("MMM D, YYYY h:mm:ss A"));
             }
         });
     }
