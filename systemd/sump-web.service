@@ -8,7 +8,7 @@ Type=simple
 User=pi
 Group=pi
 WorkingDirectory=/home/pi/sump-sentinel/app
-ExecStart=/home/pi/sump-sentinel/bin/gunicorn sump_web:app
+ExecStart=/home/pi/sump-sentinel/bin/gunicorn -b 0.0.0.0:8000 sump_web:app
 
 [Install]
 WantedBy=multi-user.target
