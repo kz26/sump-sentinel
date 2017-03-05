@@ -8,6 +8,7 @@ Type=simple
 User=pi
 Group=pi
 WorkingDirectory=/home/pi/sump-sentinel/app
+ExecStartPre=/home/pi/sump-sentinel/bin/python3 create_db.py
 ExecStart=/home/pi/sump-sentinel/bin/python3 sump_logger.py
 
 [Install]
