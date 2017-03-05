@@ -58,6 +58,7 @@ def gen_chart():
         plt.title('Sump Pump Water Level (last 24 hours)')
         ax.set_xlabel('Time')
         ax.set_ylabel('Water level (cm)')
+        ax.set_ylim(bottom=0)
         fig.autofmt_xdate()
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %-d %-I %p'))
         ax.xaxis.set_major_locator(mdates.HourLocator())
