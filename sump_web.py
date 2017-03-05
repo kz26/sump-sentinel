@@ -35,6 +35,7 @@ def close_connection(exception):
 @app.route('/')
 def index():
     return render_template('index.html',
+        name=app.config['NAME'],
         version=__version__,
         sump_depth=app.config['SUMP_DEPTH'],
         alert_depth=app.config['ALERT_DEPTH']
