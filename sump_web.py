@@ -10,6 +10,7 @@ from flask import Flask, abort, g, jsonify, make_response, render_template
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
+
 app = Flask(__name__)
 app.config.from_pyfile('settings.cfg')
 
