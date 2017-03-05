@@ -7,6 +7,9 @@ import time
 from version import __version__
 
 from flask import Flask, abort, g, jsonify, make_response, render_template
+
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
@@ -72,7 +75,7 @@ def gen_chart():
 def latest_reading():
     db = get_db()
     c = db.cursor()
-    c.execute("SELECT timestamp AS timestamp, ?-value AS value FROM data ORDER BY timestamp DESC LIMIT 1", [app.config['SUMP_DEPTH']])
+    c.execute("SELECT timestamp AS timestamp, round(?-value, 1) AS value FROM data ORDER BY timestamp DESC LIMIT 1", [app.config['SUMP_DEPTH']])
     res = c.fetchone()
     if res:
         return jsonify({k: res[k] for k in res.keys()})
