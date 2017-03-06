@@ -56,10 +56,9 @@ def gen_chart():
     if x and y:
         fig, ax = plt.subplots(figsize=(20, 5))
         ax.plot(x, y)
-        plt.title('Sump Pump Water Level (last 24 hours)')
+        plt.title("{} Water Level (last 24 hours)".format(app.config['NAME']))
         ax.set_xlabel('Time')
         ax.set_ylabel('Water level (cm)')
-        ax.set_ylim(bottom=0)
         fig.autofmt_xdate()
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %-d %-I %p'))
         ax.xaxis.set_major_locator(mdates.HourLocator())
@@ -77,7 +76,7 @@ def gen_chart():
 def latest_reading():
     db = get_db()
     c = db.cursor()
-    c.execute("SELECT timestamp AS timestamp, round(?-value, 1) AS value FROM data ORDER BY timestamp DESC LIMIT 1", [app.config['SUMP_DEPTH']])
+    c.execute("SELECT timestamp AS timestamp, ?-value AS value FROM data ORDER BY timestamp DESC LIMIT 1", [app.config['SUMP_DEPTH']])
     res = c.fetchone()
     if res:
         return jsonify({k: res[k] for k in res.keys()})
