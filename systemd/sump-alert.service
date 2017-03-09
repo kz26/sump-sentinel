@@ -1,0 +1,14 @@
+[Unit]
+Description=Sump Sentinel email alertsl
+Wants=network-online.target 
+After=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/sump-sentinel/app
+ExecStart=/home/pi/sump-sentinel/bin/python3 sump_alert.py
+
+[Install]
+WantedBy=multi-user.target
