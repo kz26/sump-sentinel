@@ -29,7 +29,8 @@ if __name__ == '__main__':
         db = get_db()
         last_alert_time = 0
         while True:
-            cur = db.execute("SELECT AVG(value) FROM data WHERE timestamp >= datetime('now', 'unixepoch') - ?", [app.config['CHECK_INTERVAL']])
+            cur = db.execute("SELECT ? - AVG(value) FROM data WHERE timestamp >= datetime('now', 'unixepoch') - ?",
+                [app.config['SUMP_DEPTH'], app.config['CHECK_INTERVAL']])
             if cur.rowcount:
                 avg = cur.fetchone()[0]
                 if avg >= app.config['ALERT_DEPTH'] and int(time.time()) - app.config['CHECK_INTERVAL'] > last_alert_time:
