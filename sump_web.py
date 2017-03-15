@@ -90,7 +90,7 @@ def gen_chart_1h():
         ax.set_ylabel('Water level (cm)')
         fig.autofmt_xdate()
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%-I:%M %p'))
-        ax.xaxis.set_major_locator(mdates.MinuteLocator())
+        ax.xaxis.set_major_locator(mdates.MinuteLocator(interval=2))
         stream = io.BytesIO()
         fig.tight_layout()
         fig.savefig(stream, format='png')
