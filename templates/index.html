@@ -16,7 +16,12 @@
         <![endif]-->
 
         <div class="container">
-            <img class="img-responsive" src="{{ url_for('gen_chart') }}">
+            <div>
+                <h2>Stonybrook Water Depth - Past Hour</h2>
+                <img class="img-responsive" src="{{ url_for('gen_chart_1h') }}">
+                <h2>Stonybrook Water Depth - Past 24 hours</h2>
+                <img class="img-responsive" src="{{ url_for('gen_chart_24h') }}">
+            </div>
 
             <table class="table table-condensed">
                 <tr>

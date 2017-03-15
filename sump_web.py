@@ -42,8 +42,8 @@ def index():
     )
 
 
-@app.route('/img/chart24h.png')
-def gen_chart():
+@app.route('/img/chart24h')
+def gen_chart_24h():
     db = get_db()
     x = []
     y = []
@@ -54,15 +54,45 @@ def gen_chart():
             x.append(datetime.fromtimestamp(row[0]))
             y.append(row[1])
     if x and y:
-        fig, ax = plt.subplots(figsize=(20, 5))
+        fig, ax = plt.subplots(figsize=(15, 4))
         ax.plot(x, y)
-        plt.title("{} Water Level (last 24 hours)".format(app.config['NAME']))
         ax.set_xlabel('Time')
         ax.set_ylabel('Water level (cm)')
         fig.autofmt_xdate()
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %-d %-I %p'))
         ax.xaxis.set_major_locator(mdates.HourLocator())
         stream = io.BytesIO()
+        fig.tight_layout()
+        fig.savefig(stream, format='png')
+        stream.seek(0)
+        response = make_response(stream.read())
+        response.headers['Content-Type'] = 'image/png'
+        return response
+    else:
+        abort(404)
+
+
+@app.route('/img/chart1h')
+def gen_chart_1h():
+    db = get_db()
+    x = []
+    y = []
+    for i, row in enumerate(db.execute(
+        "SELECT timestamp, ?-value FROM data WHERE timestamp >= ? - 60",
+            [app.config['SUMP_DEPTH'], int(time.time())])):
+        if row and i % 60 == 0:
+            x.append(datetime.fromtimestamp(row[0]))
+            y.append(row[1])
+    if x and y:
+        fig, ax = plt.subplots(figsize=(15, 4))
+        ax.plot(x, y)
+        ax.set_xlabel('Time')
+        ax.set_ylabel('Water level (cm)')
+        fig.autofmt_xdate()
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%-I:%M %p'))
+        ax.xaxis.set_major_locator(mdates.MinuteLocator())
+        stream = io.BytesIO()
+        fig.tight_layout()
         fig.savefig(stream, format='png')
         stream.seek(0)
         response = make_response(stream.read())
