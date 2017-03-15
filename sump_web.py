@@ -78,7 +78,7 @@ def gen_chart_1h():
     x = []
     y = []
     for i, row in enumerate(db.execute(
-        "SELECT timestamp, ?-value FROM data WHERE timestamp >= ? - 60",
+        "SELECT timestamp, ?-value FROM data WHERE timestamp >= ? - 3600",
             [app.config['SUMP_DEPTH'], int(time.time())])):
         if row and i % 60 == 0:
             x.append(datetime.fromtimestamp(row[0]))
